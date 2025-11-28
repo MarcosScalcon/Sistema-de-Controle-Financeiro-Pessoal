@@ -37,4 +37,4 @@ O objetivo da entrega é cumprir os requisitos da avaliação: Frontend em Vue 3
 
 
 
-Atualizado em: 17 de novembro de 2025
+Atualizado em: 27 de novembro de 2025
