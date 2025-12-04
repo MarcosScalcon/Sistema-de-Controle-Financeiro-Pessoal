@@ -19,23 +19,19 @@
 
 <script>
 import { useAuthStore } from '../stores/auth'
-import { useRouter } from 'vue-router'
 
 export default {
   name: 'Login',
   setup() {
     const authStore = useAuthStore()
-    const router = useRouter()
     
-    const handleGoogleLogin = () => {
-      // TODO: Implementar login real com Supabase/Firebase
-      // Por enquanto, simulando login
-      authStore.setUser({
-        name: 'Usuário Teste',
-        email: 'teste@email.com',
-        avatar: ''
-      })
-      router.push('/dashboard')
+    const handleGoogleLogin = async () => {
+      try {
+        await authStore.loginWithGoogle()
+      } catch (error) {
+        console.error('Erro ao fazer login:', error)
+        alert('Erro ao fazer login. Verifique as configurações do Supabase.')
+      }
     }
     
     return { handleGoogleLogin }
