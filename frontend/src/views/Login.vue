@@ -1,15 +1,22 @@
 <template>
   <div class="login-container">
-    <v-card class="pa-6" width="400" elevation="8">
-      <v-card-title class="text-h5 mb-4 text-center">
+    <v-card class="login-card" width="450" elevation="12" rounded="lg">
+      <v-card-title class="text-h4 mb-2 text-center font-weight-bold pt-8">
         💰 Controle Financeiro
       </v-card-title>
-      <v-card-subtitle class="text-center mb-4">
-        Faça login para continuar
+      <v-card-subtitle class="text-center mb-6 text-body-1">
+        Gerencie suas finanças de forma inteligente
       </v-card-subtitle>
-      <v-card-text>
-        <v-btn color="primary" block size="large" @click="handleGoogleLogin">
-          <v-icon left>mdi-google</v-icon>
+      <v-card-text class="px-8 pb-8">
+        <v-btn 
+          color="primary" 
+          block 
+          size="x-large" 
+          class="google-btn"
+          @click="handleGoogleLogin"
+          elevation="0"
+        >
+          <v-icon left size="24">mdi-google</v-icon>
           Entrar com Google
         </v-btn>
       </v-card-text>
@@ -45,6 +52,19 @@ export default {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #E0F7FA 0%, #0288D1 100%);
+}
+
+.login-card {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+.google-btn {
+  text-transform: none;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  height: 56px !important;
 }
 </style>

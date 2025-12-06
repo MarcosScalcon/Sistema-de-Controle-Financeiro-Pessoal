@@ -1,16 +1,39 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark v-if="authStore.isAuthenticated">
-      <v-toolbar-title>💰 Controle Financeiro</v-toolbar-title>
+    <v-app-bar app color="primary" elevation="2" v-if="authStore.isAuthenticated">
+      <v-toolbar-title class="font-weight-bold text-h6">
+        💰 Controle Financeiro
+      </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn text @click="$router.push('/dashboard')">Dashboard</v-btn>
-      <v-btn text @click="$router.push('/transactions')">Transações</v-btn>
-      <v-btn icon @click="logout">
+      <v-btn 
+        variant="text"
+        size="large"
+        @click="$router.push('/dashboard')"
+        :class="{ 'active-nav': $route.path === '/dashboard' }"
+      >
+        <v-icon left>mdi-view-dashboard</v-icon>
+        Dashboard
+      </v-btn>
+      <v-btn 
+        variant="text"
+        size="large"
+        @click="$router.push('/transactions')"
+        :class="{ 'active-nav': $route.path === '/transactions' }"
+      >
+        <v-icon left>mdi-cash-multiple</v-icon>
+        Transações
+      </v-btn>
+      <v-btn 
+        icon
+        size="large"
+        @click="logout"
+        class="ml-2"
+      >
         <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
     
-    <v-main>
+    <v-main style="background-color: #f5f5f5;">
       <router-view />
     </v-main>
   </v-app>
@@ -40,3 +63,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.active-nav {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+</style>
