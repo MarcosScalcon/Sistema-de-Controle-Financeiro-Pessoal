@@ -1,19 +1,34 @@
-import express from 'express'
-import { createClient } from '@supabase/supabase-js'
-import dotenv from 'dotenv'
+const express = require('express');
+const { createClient } = require('@supabase/supabase-js');
+require('dotenv').config();
 
-// Garantir que as variáveis de ambiente estejam carregadas
-dotenv.config()
-
-const router = express.Router()
+const router = express.Router();
 
 // Configurar cliente Supabase
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
-)
+);
 
-// GET - Listar todas
+/**
+ * @swagger
+ * /transactions:
+ *   get:
+ *     summary: Lista todas as transações
+ *     description: Retorna todas as transações do banco de dados ordenadas por data
+ *     tags: [Transações]
+ *     responses:
+ *       200:
+ *         description: Lista de transações retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Transaction'
+ *       500:
+ *         description: Erro no servidor
+ */
 router.get('/', async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -28,7 +43,33 @@ router.get('/', async (req, res) => {
   }
 })
 
-// GET - Buscar por ID
+/**
+ * @swagger
+ * /transactions/{id}:
+ *   get:
+ *     summary: Busca uma transação por ID
+ *     description: Retorna os detalhes de uma transação específica
+ *     tags: [Transações]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID da transação
+ *     responses:
+ *       200:
+ *         description: Transação encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Transaction'
+ *       404:
+ *         description: Transação não encontrada
+ *       500:
+ *         description: Erro no servidor
+ */
 router.get('/:id', async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -50,7 +91,56 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-// POST - Criar
+/**
+ * @swagger
+ * /transactions:
+ *   post:
+ *     summary: Cria uma nova transação
+ *     description: Adiciona uma nova transação ao banco de dados
+ *     tags: [Transações]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - amount
+ *               - type
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: Salário
+ *               amount:
+ *                 type: number
+ *                 example: 3500.00
+ *               type:
+ *                 type: string
+ *                 enum: [receita, despesa]
+ *                 example: receita
+ *               date:
+ *                 type: string
+ *                 format: date
+ *                 example: 2025-12-05
+ *               notes:
+ *                 type: string
+ *                 example: Pagamento mensal
+ *               user_id:
+ *                 type: string
+ *                 format: uuid
+ *     responses:
+ *       201:
+ *         description: Transação criada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Transaction'
+ *       400:
+ *         description: Dados inválidos
+ *       500:
+ *         description: Erro no servidor
+ */
 router.post('/', async (req, res) => {
   try {
     const { title, amount, type, date, notes, user_id } = req.body
@@ -82,7 +172,52 @@ router.post('/', async (req, res) => {
   }
 })
 
-// PUT - Atualizar
+/**
+ * @swagger
+ * /transactions/{id}:
+ *   put:
+ *     summary: Atualiza uma transação
+ *     description: Atualiza os dados de uma transação existente
+ *     tags: [Transações]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID da transação
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               amount:
+ *                 type: number
+ *               type:
+ *                 type: string
+ *                 enum: [receita, despesa]
+ *               date:
+ *                 type: string
+ *                 format: date
+ *               notes:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Transação atualizada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Transaction'
+ *       404:
+ *         description: Transação não encontrada
+ *       500:
+ *         description: Erro no servidor
+ */
 router.put('/:id', async (req, res) => {
   try {
     const { title, amount, type, date, notes } = req.body
@@ -113,7 +248,29 @@ router.put('/:id', async (req, res) => {
   }
 })
 
-// DELETE - Excluir
+/**
+ * @swagger
+ * /transactions/{id}:
+ *   delete:
+ *     summary: Deleta uma transação
+ *     description: Remove uma transação do banco de dados
+ *     tags: [Transações]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID da transação a ser deletada
+ *     responses:
+ *       204:
+ *         description: Transação deletada com sucesso
+ *       404:
+ *         description: Transação não encontrada
+ *       500:
+ *         description: Erro no servidor
+ */
 router.delete('/:id', async (req, res) => {
   try {
     const { error } = await supabase
@@ -128,4 +285,4 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
-export default router
+module.exports = router;

@@ -181,7 +181,8 @@ CREATE POLICY "Users can delete their own transactions"
 cd backend
 npm start
 ```
-O servidor estará rodando em `http://localhost:3000`
+O servidor estará rodando em `http://localhost:3000`  
+ **Documentação Swagger:** `http://localhost:3000/api-docs`
 
 ### Iniciar o Frontend
 ```bash
@@ -200,12 +201,28 @@ A aplicação estará disponível em `http://localhost:5173`
 
 ### Backend API
 - `GET /transactions` - Lista todas as transações do usuário
+- `GET /transactions/:id` - Busca uma transação por ID
 - `POST /transactions` - Cria uma nova transação
 - `PUT /transactions/:id` - Atualiza uma transação existente
 - `DELETE /transactions/:id` - Remove uma transação
 
+###  Documentação da API (Swagger)
+
+A API está totalmente documentada com Swagger/OpenAPI 3.0. Após iniciar o backend, acesse:
+
+```
+http://localhost:3000/api-docs
+```
+
+A interface interativa do Swagger permite:
+- Visualizar todos os endpoints disponíveis
+- Ver exemplos de requisições e respostas
+- Testar as APIs diretamente pelo navegador
+- Consultar os schemas de dados (Transaction, Error)
+
 ## ✅ Requisitos Atendidos
 
+### Avaliação 2 - Sistema Completo
 - ✅ Framework Vue 3 com Composition API
 - ✅ Vuetify para componentes UI
 - ✅ Vue Router para navegação
@@ -221,16 +238,47 @@ A aplicação estará disponível em `http://localhost:5173`
 - ✅ Feedback visual com snackbars
 - ✅ Loading states em operações assíncronas
 
+### Avaliação 3 - Documentação da API
+- ✅ Swagger/OpenAPI 3.0 configurado
+- ✅ Documentação completa de todos os endpoints
+- ✅ Schemas de dados definidos (Transaction, Error)
+- ✅ Interface interativa para testes
+- ✅ Exemplos de requisições e respostas
+- ✅ Descrições detalhadas de parâmetros
+- ✅ Documentação de códigos de status HTTP
+
 ##  Capturas de Tela
 
 ### Tela de Login
+Interface clean com autenticação Google OAuth.
+
 ![Tela de Login](/images/tela_login.png)
 
 ### Dashboard
+Visualização de saldo total, entradas, saídas e últimas transações.
+
 ![Dashboard](/images/dashboard.png)
 
 ### Transações
+Tabela completa com CRUD, filtros, edição inline e confirmação de exclusão.
+
 ![Transações](/images/transações.png)
+
+### Documentação Swagger - Visão Geral
+Interface interativa da API com todos os endpoints documentados.
+
+![Swagger Overview](/images/swagger_overview.png)
+
+### Documentação Swagger - POST Endpoint
+Exemplo de criação de transação com request body e validações.
+
+![Swagger POST](/images/swagger_post.png)
+
+### Documentação Swagger - Schemas
+Estrutura completa dos modelos de dados (Transaction e Error).
+
+![Swagger Schemas](/images/swagger_schemas.png)
+
 
 ##  Contribuidores
 

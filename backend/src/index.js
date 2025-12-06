@@ -1,26 +1,25 @@
-import express from 'express'
-import cors from 'cors'
-import dotenv from 'dotenv'
-import transactionsRouter from './routes/transactions.js'
+const express = require('express');
+const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
+require('dotenv').config();
 
-dotenv.config()
-
-const app = express()
-const PORT = process.env.PORT || 3000
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Middlewares
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
-// Rotas
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'API funcionando!' })
-})
+// Rota de documentação Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use('/api/transactions', transactionsRouter)
+// Rotas da aplicação
+const transactionsRouter = require('./routes/transactions');
+app.use('/transactions', transactionsRouter);
 
 // Iniciar servidor
 app.listen(PORT, () => {
-  console.log(`✅ Backend rodando em http://localhost:${PORT}`)
-  console.log(`📊 Health check: http://localhost:${PORT}/api/health`)
-})
+  console.log(`✅ Backend rodando em http://localhost:${PORT}`);
+  console.log(`📚 Documentação disponível em http://localhost:${PORT}/api-docs`);
+});
