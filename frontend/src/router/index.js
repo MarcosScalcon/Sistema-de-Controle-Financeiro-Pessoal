@@ -31,9 +31,18 @@ const router = createRouter({
 })
 
 // Guard de autenticação
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+  
+  // Restaurar sessão se necessário
+  if (!authStore.isAuthenticated && to.meta.requiresAuth) {
+    await authStore.restoreSession()
+  }
+  
+  // Se já está autenticado e tenta acessar login, redireciona para dashboard
+  if (to.name === 'Login' && authStore.isAuthenticated) {
+    next({ name: 'Dashboard' })
+  } else if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     next({ name: 'Login' })
   } else {
     next()
